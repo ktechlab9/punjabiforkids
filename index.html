@@ -1,0 +1,1033 @@
+<!DOCTYPE html>
+<html lang="pa">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>ਪੰਜਾਬੀ ਸਿੱਖੋ · Learn Punjabi</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+Bhai+2:wght@400;600;800&family=Nunito:wght@400;700;900&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --saffron: #FF6B00;
+    --gold: #FFB800;
+    --deep-red: #C0392B;
+    --teal: #00897B;
+    --sky: #0288D1;
+    --cream: #FFF8EE;
+    --dark: #1A0A00;
+    --card-bg: #FFFDF7;
+    --shadow: 0 4px 20px rgba(255,107,0,0.15);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: var(--cream);
+    color: var(--dark);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* === HERO === */
+  header {
+    background: linear-gradient(135deg, #FF6B00 0%, #FFB800 50%, #FF6B00 100%);
+    position: relative;
+    padding: 48px 24px 64px;
+    text-align: center;
+    overflow: hidden;
+  }
+  header::before {
+    content: '';
+    position: absolute; inset: 0;
+    background-image: radial-gradient(circle, rgba(255,255,255,0.12) 1.5px, transparent 1.5px);
+    background-size: 28px 28px;
+  }
+  .header-inner { position: relative; z-index: 1; }
+  .logo-icon { font-size: 64px; line-height: 1; margin-bottom: 8px; display: block; animation: bounce 2s infinite; }
+  @keyframes bounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
+
+  header h1 {
+    font-family: 'Baloo Bhai 2', cursive;
+    font-size: clamp(2.4rem, 7vw, 4rem);
+    font-weight: 800;
+    color: #fff;
+    text-shadow: 3px 3px 0 rgba(0,0,0,0.15);
+    line-height: 1.1;
+  }
+  header p {
+    margin-top: 8px;
+    font-size: 1.1rem;
+    color: rgba(255,255,255,0.9);
+    font-weight: 700;
+    letter-spacing: 0.03em;
+  }
+
+  /* === NAV TABS === */
+  nav {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 24px 16px 8px;
+    background: #fff;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .tab-btn {
+    font-family: 'Baloo Bhai 2', cursive;
+    font-size: 1rem;
+    font-weight: 600;
+    padding: 10px 22px;
+    border-radius: 50px;
+    border: 2.5px solid transparent;
+    cursor: pointer;
+    transition: all 0.2s;
+    background: var(--cream);
+    color: var(--dark);
+  }
+  .tab-btn:hover { transform: translateY(-2px); box-shadow: var(--shadow); }
+  .tab-btn.active { color: #fff; border-color: transparent; }
+  .tab-btn[data-tab="alphabet"].active { background: var(--deep-red); }
+  .tab-btn[data-tab="numbers"].active { background: var(--sky); }
+  .tab-btn[data-tab="words"].active   { background: var(--teal); }
+  .tab-btn[data-tab="sentences"].active { background: #7B1FA2; }
+  .tab-btn[data-tab="stories"].active { background: #E65100; }
+
+  /* === MAIN === */
+  main { max-width: 1100px; margin: 0 auto; padding: 40px 20px 80px; }
+
+  .section { display: none; animation: fadeIn 0.35s ease; }
+  .section.active { display: block; }
+  @keyframes fadeIn { from{opacity:0;transform:translateY(12px)} to{opacity:1;transform:translateY(0)} }
+
+  .section-title {
+    font-family: 'Baloo Bhai 2', cursive;
+    font-size: 1.8rem;
+    font-weight: 800;
+    margin-bottom: 6px;
+  }
+  .section-sub { color: #888; font-size: 0.95rem; margin-bottom: 28px; }
+
+  /* === ALPHABET GRID === */
+  .alpha-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+    gap: 16px;
+  }
+
+  /* Flip card wrapper */
+  .alpha-flip {
+    height: 150px;
+    perspective: 800px;
+    cursor: pointer;
+  }
+  .alpha-flip-inner {
+    position: relative;
+    width: 100%; height: 100%;
+    transform-style: preserve-3d;
+    transition: transform 0.5s cubic-bezier(.4,0,.2,1);
+    border-radius: 18px;
+  }
+  .alpha-flip.flipped .alpha-flip-inner { transform: rotateY(180deg); }
+
+  .alpha-front, .alpha-back {
+    position: absolute; inset: 0;
+    backface-visibility: hidden;
+    border-radius: 18px;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    padding: 10px 8px;
+    border: 2.5px solid #FFE0C8;
+    background: var(--card-bg);
+    box-shadow: 0 2px 10px rgba(255,107,0,0.08);
+  }
+  .alpha-front:hover { border-color: var(--saffron); box-shadow: var(--shadow); }
+  .alpha-back {
+    transform: rotateY(180deg);
+    background: linear-gradient(135deg, #FFF3E0, #FFF8EE);
+    border-color: var(--saffron);
+  }
+
+  /* Front face */
+  .alpha-front .letter {
+    font-family: 'Baloo Bhai 2', cursive;
+    font-size: 2.8rem;
+    font-weight: 800;
+    color: var(--deep-red);
+    line-height: 1;
+  }
+  .alpha-front .hint {
+    font-size: 0.68rem;
+    color: #bbb;
+    margin-top: 6px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+  }
+  .alpha-front .flip-tip {
+    font-size: 0.6rem;
+    color: #ddd;
+    margin-top: 4px;
+  }
+
+  /* Back face */
+  .alpha-back .back-letter {
+    font-family: 'Baloo Bhai 2', cursive;
+    font-size: 1.6rem;
+    font-weight: 800;
+    color: var(--deep-red);
+    line-height: 1;
+  }
+  .alpha-back .back-sound {
+    font-size: 1rem;
+    font-weight: 900;
+    color: var(--saffron);
+    margin-top: 4px;
+  }
+  .alpha-back .back-like {
+    font-size: 0.7rem;
+    color: #888;
+    font-weight: 700;
+    margin-top: 3px;
+    text-align: center;
+  }
+  .alpha-back .back-word {
+    font-size: 0.68rem;
+    color: var(--teal);
+    font-weight: 700;
+    margin-top: 5px;
+    text-align: center;
+    line-height: 1.3;
+  }
+  .alpha-back .more-btn {
+    margin-top: 8px;
+    font-size: 0.65rem;
+    padding: 3px 10px;
+    border-radius: 50px;
+    border: 1.5px solid var(--saffron);
+    background: transparent;
+    color: var(--saffron);
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .alpha-back .more-btn:hover { background: var(--saffron); color: #fff; }
+
+  /* === MODAL === */
+  #modal-overlay {
+    position: fixed; inset: 0;
+    background: rgba(26,10,0,0.55);
+    z-index: 500;
+    display: flex; align-items: center; justify-content: center;
+    padding: 20px;
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.25s;
+  }
+  #modal-overlay.open { opacity: 1; pointer-events: all; }
+  #modal-box {
+    background: #fff;
+    border-radius: 28px;
+    max-width: 420px; width: 100%;
+    padding: 36px 32px 28px;
+    position: relative;
+    transform: scale(0.9);
+    transition: transform 0.25s;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+  }
+  #modal-overlay.open #modal-box { transform: scale(1); }
+  #modal-close {
+    position: absolute; top: 16px; right: 20px;
+    font-size: 1.5rem; background: none; border: none; cursor: pointer; color: #ccc;
+    line-height: 1;
+  }
+  #modal-close:hover { color: var(--deep-red); }
+  .modal-letter {
+    font-family: 'Baloo Bhai 2', cursive;
+    font-size: 5rem; font-weight: 800;
+    color: var(--deep-red);
+    line-height: 1;
+    text-align: center;
+    display: block;
+  }
+  .modal-row {
+    display: flex; gap: 12px; margin-top: 20px;
+    background: #FFF8EE; border-radius: 16px; padding: 16px;
+  }
+  .modal-badge {
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    background: #fff; border-radius: 12px; padding: 10px 14px; flex: 1;
+    border: 2px solid #FFE0C8;
+  }
+  .modal-badge .badge-label { font-size: 0.65rem; color: #bbb; font-weight: 700; text-transform: uppercase; }
+  .modal-badge .badge-val { font-size: 1.1rem; font-weight: 900; color: var(--saffron); margin-top: 2px; }
+  .modal-section { margin-top: 18px; }
+  .modal-section h4 { font-size: 0.75rem; color: #bbb; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 6px; }
+  .modal-section p { font-size: 0.95rem; font-weight: 600; color: var(--dark); line-height: 1.5; }
+  .modal-word-box {
+    margin-top: 16px;
+    background: linear-gradient(135deg, #E0F2F1, #F1F8E9);
+    border-radius: 14px; padding: 14px 16px;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .modal-word-emoji { font-size: 2rem; }
+  .modal-word-text .wt-pa { font-family: 'Baloo Bhai 2', cursive; font-size: 1.2rem; font-weight: 700; color: var(--teal); }
+  .modal-word-text .wt-en { font-size: 0.8rem; color: #888; font-weight: 700; }
+  .modal-speak-btn {
+    width: 100%; margin-top: 20px;
+    padding: 13px; border-radius: 50px;
+    border: none; background: var(--deep-red); color: #fff;
+    font-family: 'Baloo Bhai 2', cursive;
+    font-size: 1.1rem; font-weight: 700;
+    cursor: pointer; transition: all 0.2s;
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+  }
+  .modal-speak-btn:hover { background: var(--saffron); transform: translateY(-2px); }
+
+  /* === NUMBERS GRID === */
+  .num-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+    gap: 16px;
+  }
+  .num-card {
+    background: var(--card-bg);
+    border-radius: 20px;
+    padding: 20px 12px;
+    text-align: center;
+    cursor: pointer;
+    border: 2.5px solid #C8E6FF;
+    transition: all 0.2s;
+  }
+  .num-card:hover { transform: translateY(-4px); box-shadow: 0 6px 20px rgba(2,136,209,0.2); border-color: var(--sky); }
+  .num-card .num-pa {
+    font-family: 'Baloo Bhai 2', cursive;
+    font-size: 2.6rem;
+    font-weight: 800;
+    color: var(--sky);
+    display: block;
+  }
+  .num-card .num-en {
+    font-size: 1.1rem;
+    font-weight: 900;
+    color: var(--dark);
+    margin-top: 2px;
+  }
+  .num-card .num-word {
+    font-size: 0.85rem;
+    color: #888;
+    margin-top: 4px;
+  }
+
+  /* === WORDS === */
+  .words-filter {
+    display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 24px;
+  }
+  .filter-btn {
+    padding: 7px 18px;
+    border-radius: 50px;
+    border: 2px solid #ddd;
+    background: #fff;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.18s;
+  }
+  .filter-btn.active, .filter-btn:hover {
+    background: var(--teal); color: #fff; border-color: var(--teal);
+  }
+  .words-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 16px;
+  }
+  .word-card {
+    background: var(--card-bg);
+    border-radius: 20px;
+    padding: 20px 14px 16px;
+    text-align: center;
+    cursor: pointer;
+    border: 2.5px solid #B2DFDB;
+    transition: all 0.2s;
+  }
+  .word-card:hover { transform: translateY(-4px); box-shadow: 0 6px 20px rgba(0,137,123,0.2); border-color: var(--teal); }
+  .word-card .emoji { font-size: 2.2rem; display: block; margin-bottom: 8px; }
+  .word-card .word-pa {
+    font-family: 'Baloo Bhai 2', cursive;
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: var(--teal);
+    display: block;
+  }
+  .word-card .word-en {
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: #999;
+    margin-top: 3px;
+  }
+  .word-card .word-roman {
+    font-size: 0.75rem;
+    color: #bbb;
+    margin-top: 2px;
+  }
+
+  /* === SENTENCES === */
+  .sentences-list { display: flex; flex-direction: column; gap: 18px; }
+  .sent-card {
+    background: var(--card-bg);
+    border-radius: 20px;
+    padding: 22px 24px;
+    border-left: 6px solid #7B1FA2;
+    box-shadow: 0 2px 12px rgba(123,31,162,0.08);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .sent-card:hover { transform: translateX(4px); box-shadow: 0 4px 20px rgba(123,31,162,0.15); }
+  .sent-card .sent-pa {
+    font-family: 'Baloo Bhai 2', cursive;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #7B1FA2;
+    display: block;
+  }
+  .sent-card .sent-roman { font-size: 0.9rem; color: #aaa; margin-top: 3px; font-style: italic; }
+  .sent-card .sent-en {
+    font-size: 1rem; font-weight: 700; color: var(--dark); margin-top: 6px; display: block;
+  }
+  .sent-card .sent-context {
+    font-size: 0.78rem; color: #bbb; margin-top: 4px;
+    background: #F3E5F5; display: inline-block; padding: 2px 10px; border-radius: 50px;
+  }
+
+  /* === TOAST === */
+  #toast {
+    position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(80px);
+    background: var(--dark); color: #fff;
+    padding: 12px 28px;
+    border-radius: 50px;
+    font-weight: 700;
+    font-size: 1rem;
+    z-index: 999;
+    transition: transform 0.3s, opacity 0.3s;
+    opacity: 0;
+    pointer-events: none;
+    white-space: nowrap;
+  }
+  #toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+
+  /* === STORIES === */
+  .stories-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 24px;
+  }
+  .story-card {
+    background: var(--card-bg);
+    border-radius: 24px;
+    overflow: hidden;
+    border: 2.5px solid #FFE0B2;
+    box-shadow: 0 3px 16px rgba(230,81,0,0.08);
+    transition: all 0.25s;
+    cursor: pointer;
+  }
+  .story-card:hover { transform: translateY(-5px); box-shadow: 0 10px 32px rgba(230,81,0,0.18); border-color: #E65100; }
+  .story-header {
+    background: linear-gradient(135deg, #E65100, #FF8F00);
+    padding: 22px 20px 16px;
+    position: relative;
+  }
+  .story-emoji { font-size: 3rem; display: block; margin-bottom: 6px; }
+  .story-title {
+    font-family: 'Baloo Bhai 2', cursive;
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: #fff;
+    line-height: 1.2;
+  }
+  .story-title-en { font-size: 0.8rem; color: rgba(255,255,255,0.8); margin-top: 2px; font-weight: 600; }
+  .story-badge {
+    position: absolute; top: 14px; right: 14px;
+    background: rgba(255,255,255,0.25);
+    color: #fff; font-size: 0.65rem; font-weight: 800;
+    padding: 3px 10px; border-radius: 50px;
+    text-transform: uppercase; letter-spacing: 0.05em;
+  }
+  .story-body { padding: 18px 20px 20px; }
+  .story-text-pa {
+    font-family: 'Baloo Bhai 2', cursive;
+    font-size: 1rem;
+    color: var(--dark);
+    line-height: 1.7;
+    display: block;
+    margin-bottom: 12px;
+  }
+  .story-divider {
+    height: 1px; background: #FFE0B2; margin: 12px 0;
+  }
+  .story-text-en {
+    font-size: 0.88rem;
+    color: #888;
+    line-height: 1.6;
+    font-style: italic;
+  }
+  .story-moral {
+    margin-top: 14px;
+    background: linear-gradient(135deg, #FFF8E1, #FFF3CD);
+    border-left: 4px solid var(--gold);
+    border-radius: 0 12px 12px 0;
+    padding: 10px 14px;
+  }
+  .story-moral .moral-label {
+    font-size: 0.68rem; font-weight: 800; color: var(--gold);
+    text-transform: uppercase; letter-spacing: 0.07em;
+  }
+  .story-moral .moral-text {
+    font-size: 0.85rem; font-weight: 700; color: #7B5800; margin-top: 3px;
+  }
+  .story-listen-btn {
+    margin-top: 14px;
+    width: 100%;
+    padding: 10px;
+    border-radius: 50px;
+    border: 2px solid #E65100;
+    background: transparent;
+    color: #E65100;
+    font-family: 'Baloo Bhai 2', cursive;
+    font-size: 0.9rem; font-weight: 700;
+    cursor: pointer; transition: all 0.18s;
+  }
+  .story-listen-btn:hover, .story-listen-btn.playing {
+    background: #E65100; color: #fff;
+  }
+
+  /* === FOOTER === */
+  footer {
+    text-align: center;
+    padding: 24px;
+    font-size: 0.85rem;
+    color: #ccc;
+    background: var(--dark);
+  }
+  footer span { color: var(--gold); }
+
+  /* Decorative phulkari border */
+  .phulkari-bar {
+    height: 12px;
+    background: repeating-linear-gradient(90deg, #FF6B00 0, #FF6B00 14px, #FFB800 14px, #FFB800 28px, #C0392B 28px, #C0392B 42px, #00897B 42px, #00897B 56px, #0288D1 56px, #0288D1 70px);
+  }
+</style>
+</head>
+<body>
+
+<div class="phulkari-bar"></div>
+
+<header>
+  <div class="header-inner">
+    <span class="logo-icon">🌻</span>
+    <h1>ਪੰਜਾਬੀ ਸਿੱਖੋ</h1>
+    <p>Learn Punjabi · The Fun Way!</p>
+  </div>
+</header>
+
+<nav>
+  <button class="tab-btn active" data-tab="alphabet">🔤 ਅੱਖਰ · Alphabet</button>
+  <button class="tab-btn" data-tab="numbers">🔢 ਗਿਣਤੀ · Numbers</button>
+  <button class="tab-btn" data-tab="words">📖 ਸ਼ਬਦ · Words</button>
+  <button class="tab-btn" data-tab="sentences">💬 ਵਾਕ · Sentences</button>
+  <button class="tab-btn" data-tab="stories">📚 ਕਹਾਣੀਆਂ · Stories</button>
+</nav>
+
+<main>
+
+  <!-- Voice fallback banner -->
+  <div id="voice-banner" style="display:none; align-items:center; gap:12px; background:#FFF3CD; border:2px solid #FFD54F; border-radius:14px; padding:12px 18px; margin-bottom:24px; font-size:0.88rem; font-weight:700; color:#7B5800;">
+    <span style="font-size:1.4rem">🔊</span>
+    <span>Audio needs an internet connection (powered by Google Translate). If sound isn't playing, check your connection or try opening in Chrome.</span>
+  </div>
+
+  <!-- ALPHABET -->
+  <section class="section active" id="alphabet">
+    <div class="section-title" style="color:var(--deep-red)">🔤 Gurmukhi Alphabet · ਗੁਰਮੁਖੀ ਵਰਣਮਾਲਾ</div>
+    <div class="section-sub">👆 Tap to flip · hear the sound · tap <b>Full guide</b> for details</div>
+    <div class="alpha-grid" id="alphaGrid"></div>
+  </section>
+
+  <!-- NUMBERS -->
+  <section class="section" id="numbers">
+    <div class="section-title" style="color:var(--sky)">🔢 Numbers · ਗਿਣਤੀ</div>
+    <div class="section-sub">Learn to count in Punjabi! · ਪੰਜਾਬੀ ਵਿੱਚ ਗਿਣਨਾ ਸਿੱਖੋ!</div>
+    <div class="num-grid" id="numGrid"></div>
+  </section>
+
+  <!-- WORDS -->
+  <section class="section" id="words">
+    <div class="section-title" style="color:var(--teal)">📖 Vocabulary · ਸ਼ਬਦ ਭੰਡਾਰ</div>
+    <div class="section-sub">Tap a card to hear the word! · ਕਾਰਡ ਛੂਹੋ!</div>
+    <div class="words-filter" id="wordsFilter"></div>
+    <div class="words-grid" id="wordsGrid"></div>
+  </section>
+
+  <!-- SENTENCES -->
+  <section class="section" id="sentences">
+    <div class="section-title" style="color:#7B1FA2">💬 Simple Sentences · ਸਰਲ ਵਾਕ</div>
+    <div class="section-sub">Everyday Punjabi phrases · ਰੋਜ਼ਾਨਾ ਦੀਆਂ ਗੱਲਾਂ</div>
+    <div class="sentences-list" id="sentList"></div>
+  </section>
+
+  <!-- STORIES -->
+  <section class="section" id="stories">
+    <div class="section-title" style="color:#E65100">📚 ਪੰਜਾਬੀ ਕਹਾਣੀਆਂ · Punjabi Animal Fables</div>
+    <div class="section-sub">Old stories with big lessons · ਪੁਰਾਣੀਆਂ ਕਹਾਣੀਆਂ, ਵੱਡੀਆਂ ਸਿੱਖਿਆਵਾਂ · 🔊 Tap Listen to hear in Punjabi</div>
+    <div class="stories-grid" id="storiesGrid"></div>
+  </section>
+
+</main>
+
+<div class="phulkari-bar"></div>
+<div id="modal-overlay">
+  <div id="modal-box">
+    <button id="modal-close" onclick="document.getElementById('modal-overlay').classList.remove('open')">✕</button>
+    <span id="modal-letter" class="modal-letter"></span>
+    <div class="modal-row">
+      <div class="modal-badge">
+        <span class="badge-label">Sound</span>
+        <span class="badge-val" id="modal-roman"></span>
+      </div>
+      <div class="modal-badge">
+        <span class="badge-label">Like</span>
+        <span class="badge-val" style="font-size:0.85rem;color:var(--teal)" id="modal-like"></span>
+      </div>
+    </div>
+    <div class="modal-section">
+      <h4>🗣️ How to say it</h4>
+      <p id="modal-tip"></p>
+    </div>
+    <div class="modal-word-box">
+      <span class="modal-word-emoji" id="modal-emoji"></span>
+      <div class="modal-word-text">
+        <div class="wt-pa" id="modal-word-pa"></div>
+        <div class="wt-en" id="modal-word-en"></div>
+      </div>
+    </div>
+    <button class="modal-speak-btn" id="modal-speak">🔊 Hear it spoken</button>
+  </div>
+</div>
+
+<footer>Made with <span>❤️</span> for Punjabi kids everywhere by Asees & Arit · ਸਭ ਪੰਜਾਬੀ ਬੱਚਿਆਂ ਲਈ</footer>
+<div id="toast"></div>
+
+<script>
+// ===== DATA =====
+
+// l=letter, r=romanization, like=sounds like, tip=mouth/tongue hint, w=example word (punjabi), we=english, we2=word emoji
+const alphabet = [
+  {l:'ਅ',r:'a',like:'"u" in cup',tip:'Open mouth, short sound',w:'ਅੰਬ',we:'Mango',we2:'🥭'},
+  {l:'ਆ',r:'aa',like:'"a" in father',tip:'Open wide, hold longer',w:'ਆਮ',we:'Common',we2:'✅'},
+  {l:'ਇ',r:'i',like:'"i" in bit',tip:'Smile slightly, short',w:'ਇੱਲ',we:'Eagle',we2:'🦅'},
+  {l:'ਈ',r:'ee',like:'"ee" in feet',tip:'Stretch lips wide, long',w:'ਈਖ',we:'Sugarcane',we2:'🎋'},
+  {l:'ਉ',r:'u',like:'"u" in put',tip:'Round lips, short',w:'ਉੱਲੂ',we:'Owl',we2:'🦉'},
+  {l:'ਊ',r:'oo',like:'"oo" in moon',tip:'Round lips, hold longer',w:'ਊਠ',we:'Camel',we2:'🐪'},
+  {l:'ਏ',r:'e',like:'"a" in cake',tip:'Mid-open, smooth glide',w:'ਏੜੀ',we:'Heel',we2:'🦶'},
+  {l:'ਐ',r:'ai',like:'"e" in bed',tip:'Open and flat',w:'ਐਨਕ',we:'Glasses',we2:'👓'},
+  {l:'ਓ',r:'o',like:'"o" in go',tip:'Round lips, smooth',w:'ਓਸ',we:'Dew',we2:'💧'},
+  {l:'ਔ',r:'au',like:'"ow" in cow',tip:'Start open, round to close',w:'ਔਰਤ',we:'Woman',we2:'👩'},
+  {l:'ਕ',r:'k',like:'"k" in kite',tip:'Back of tongue to roof',w:'ਕਮਲ',we:'Lotus',we2:'🪷'},
+  {l:'ਖ',r:'kh',like:'"kh" breathy k',tip:'K with a puff of air',w:'ਖਰਗੋਸ਼',we:'Rabbit',we2:'🐇'},
+  {l:'ਗ',r:'g',like:'"g" in go',tip:'Voiced, back of tongue',w:'ਗਾਂ',we:'Cow',we2:'🐄'},
+  {l:'ਘ',r:'gh',like:'"gh" breathy g',tip:'G with throat vibration',w:'ਘੋੜਾ',we:'Horse',we2:'🐴'},
+  {l:'ਙ',r:'ng',like:'"ng" in song',tip:'Nasal sound from back of throat',w:'ਙਿਆਨ',we:'Knowledge',we2:'🧠'},
+  {l:'ਚ',r:'ch',like:'"ch" in cheese',tip:'Tongue touches palate',w:'ਚਿੜੀ',we:'Sparrow',we2:'🐦'},
+  {l:'ਛ',r:'chh',like:'ch + puff of air',tip:'Aspirated ch sound',w:'ਛੱਤਰੀ',we:'Umbrella',we2:'☂️'},
+  {l:'ਜ',r:'j',like:'"j" in jar',tip:'Voiced ch sound',w:'ਜਹਾਜ਼',we:'Airplane',we2:'✈️'},
+  {l:'ਝ',r:'jh',like:'j + breathy h',tip:'J with throat puff',w:'ਝਰਨਾ',we:'Waterfall',we2:'💦'},
+  {l:'ਞ',r:'ny',like:'"ny" in canyon',tip:'Nasal, middle of tongue on palate',w:'ਞਾਣ',we:'Knowledge (archaic)',we2:'📜'},
+  {l:'ਟ',r:'tt',like:'hard t (retroflex)',tip:'Curl tongue tip backward',w:'ਟਮਾਟਰ',we:'Tomato',we2:'🍅'},
+  {l:'ਠ',r:'tth',like:'hard t + air',tip:'Curled tongue with puff',w:'ਠੰਡ',we:'Cold',we2:'🥶'},
+  {l:'ਡ',r:'dd',like:'hard d (retroflex)',tip:'Curl tongue back, voiced',w:'ਡੱਬਾ',we:'Box',we2:'📦'},
+  {l:'ਢ',r:'ddh',like:'hard d + breathy h',tip:'Curled tongue, breathy',w:'ਢੋਲ',we:'Drum',we2:'🥁'},
+  {l:'ਣ',r:'nn',like:'retroflex n',tip:'Curl tongue back, nasal hum',w:'ਣਾਂਹ',we:'Emphatic No',we2:'🚫'},
+  {l:'ਤ',r:'t',like:'soft t (dental)',tip:'Tongue tip on upper teeth',w:'ਤਿਤਲੀ',we:'Butterfly',we2:'🦋'},
+  {l:'ਥ',r:'th',like:'dental t + air',tip:'Soft t with air burst',w:'ਥਾਲੀ',we:'Plate',we2:'🍽️'},
+  {l:'ਦ',r:'d',like:'soft d (dental)',tip:'Tongue on upper teeth',w:'ਦਰਖ਼ਤ',we:'Tree',we2:'🌳'},
+  {l:'ਧ',r:'dh',like:'soft d + breathy h',tip:'Dental d with voice puff',w:'ਧਨੁਸ਼',we:'Bow',we2:'🏹'},
+  {l:'ਨ',r:'n',like:'"n" in nose',tip:'Tongue to upper teeth',w:'ਨੱਕ',we:'Nose',we2:'👃'},
+  {l:'ਪ',r:'p',like:'"p" in park',tip:'Lips together, pop',w:'ਪੱਤਾ',we:'Leaf',we2:'🍃'},
+  {l:'ਫ',r:'ph',like:'p + puff of air',tip:'P with big breath out',w:'ਫੁੱਲ',we:'Flower',we2:'🌸'},
+  {l:'ਬ',r:'b',like:'"b" in ball',tip:'Lips together, voiced pop',w:'ਬੱਕਰੀ',we:'Goat',we2:'🐐'},
+  {l:'ਭ',r:'bh',like:'b + breathy h',tip:'B with air vibration',w:'ਭਾਲੂ',we:'Bear',we2:'🐻'},
+  {l:'ਮ',r:'m',like:'"m" in mango',tip:'Close lips, hum through nose',w:'ਮੱਛੀ',we:'Fish',we2:'🐟'},
+  {l:'ਯ',r:'y',like:'"y" in yes',tip:'Front of tongue up toward palate',w:'ਯਾਤਰੀ',we:'Traveller',we2:'🧳'},
+  {l:'ਰ',r:'r',like:'rolled r',tip:'Flap tongue tip forward once',w:'ਰੋਟੀ',we:'Bread/Roti',we2:'🫓'},
+  {l:'ਲ',r:'l',like:'"l" in love',tip:'Tongue tip up, sides open',w:'ਲੱਕੜ',we:'Wood',we2:'🪵'},
+  {l:'ਵ',r:'v/w',like:'between v and w',tip:'Light lip-touch, not full English v',w:'ਵੇਲਾ',we:'Time',we2:'⏰'},
+  {l:'ੜ',r:'rr',like:'retroflex flap r',tip:'Tongue tip flips back sharply',w:'ਪੜ੍ਹਨਾ',we:'To Read',we2:'📖'},
+  {l:'ਸ਼',r:'sh',like:'"sh" in shoe',tip:'Lips slightly rounded, hiss',w:'ਸ਼ੇਰ',we:'Lion',we2:'🦁'},
+  {l:'ਖ਼',r:'kh',like:'Scottish loch',tip:'Deep guttural from back of throat',w:'ਖ਼ਤ',we:'Letter/Mail',we2:'✉️'},
+  {l:'ਗ਼',r:'gh',like:'French r / soft gargle',tip:'Soft vibration deep in throat',w:'ਗ਼ਲਤ',we:'Wrong',we2:'❌'},
+  {l:'ਜ਼',r:'z',like:'"z" in zoo',tip:'Teeth together, buzz',w:'ਜ਼ਮੀਨ',we:'Earth/Land',we2:'🌍'},
+  {l:'ਫ਼',r:'f',like:'"f" in fan',tip:'Top teeth rest on lower lip',w:'ਫ਼ਲ',we:'Fruit',we2:'🍎'},
+  {l:'ਲ਼',r:'ll',like:'retroflex l',tip:'Curl tongue back, soft l sound',w:'ਲ਼ੋਕ',we:'People',we2:'👥'},
+  {l:'ਸ',r:'s',like:'"s" in sun',tip:'Teeth lightly together, hiss',w:'ਸੂਰਜ',we:'Sun',we2:'☀️'},
+  {l:'ਹ',r:'h',like:'"h" in hat',tip:'Open throat, breath out',w:'ਹਾਥੀ',we:'Elephant',we2:'🐘'}
+];
+
+const numbers = [
+  {pa:'੦',en:0,w:'ਸਿਫ਼ਰ (zero)'},{pa:'੧',en:1,w:'ਇੱਕ (ik)'},{pa:'੨',en:2,w:'ਦੋ (do)'},{pa:'੩',en:3,w:'ਤਿੰਨ (tinn)'},
+  {pa:'੪',en:4,w:'ਚਾਰ (chaar)'},{pa:'੫',en:5,w:'ਪੰਜ (panj)'},{pa:'੬',en:6,w:'ਛੇ (chhe)'},{pa:'੭',en:7,w:'ਸੱਤ (satt)'},
+  {pa:'੮',en:8,w:'ਅੱਠ (atth)'},{pa:'੯',en:9,w:'ਨੌਂ (naun)'},{pa:'੧੦',en:10,w:'ਦੱਸ (dass)'},{pa:'੧੧',en:11,w:'ਗਿਆਰਾਂ (giaaraaN)'},
+  {pa:'੧੨',en:12,w:'ਬਾਰਾਂ (baaraaN)'},{pa:'੧੩',en:13,w:'ਤੇਰਾਂ (teraaN)'},{pa:'੧੪',en:14,w:'ਚੌਦਾਂ (chaudaaN)'},{pa:'੧੫',en:15,w:'ਪੰਦਰਾਂ (pandaraaN)'},
+  {pa:'੨੦',en:20,w:'ਵੀਹ (veeh)'},{pa:'੩੦',en:30,w:'ਤੀਹ (teeh)'},{pa:'੫੦',en:50,w:'ਪੰਜਾਹ (panjah)'},{pa:'੧੦੦',en:100,w:'ਸੌ (sau)'}
+];
+
+const wordCategories = ['All','Animals','Food','Family','Colors','Body','Nature'];
+const words = [
+  {pa:'ਕੁੱਤਾ',en:'Dog',r:'kutta',e:'🐶',c:'Animals'},{pa:'ਬਿੱਲੀ',en:'Cat',r:'billi',e:'🐱',c:'Animals'},
+  {pa:'ਘੋੜਾ',en:'Horse',r:'ghoda',e:'🐴',c:'Animals'},{pa:'ਗਾਂ',en:'Cow',r:'gaaN',e:'🐄',c:'Animals'},
+  {pa:'ਸ਼ੇਰ',en:'Lion',r:'sher',e:'🦁',c:'Animals'},{pa:'ਹਾਥੀ',en:'Elephant',r:'haathi',e:'🐘',c:'Animals'},
+  {pa:'ਰੋਟੀ',en:'Bread/Roti',r:'roti',e:'🫓',c:'Food'},{pa:'ਦਾਲ',en:'Lentils',r:'daal',e:'🍲',c:'Food'},
+  {pa:'ਚਾਵਲ',en:'Rice',r:'chaaval',e:'🍚',c:'Food'},{pa:'ਦੁੱਧ',en:'Milk',r:'duddh',e:'🥛',c:'Food'},
+  {pa:'ਅੰਬ',en:'Mango',r:'amb',e:'🥭',c:'Food'},{pa:'ਕੇਲਾ',en:'Banana',r:'kela',e:'🍌',c:'Food'},
+  {pa:'ਮਾਂ',en:'Mother',r:'maaN',e:'👩',c:'Family'},{pa:'ਪਿਤਾ',en:'Father',r:'pita',e:'👨',c:'Family'},
+  {pa:'ਭੈਣ',en:'Sister',r:'bhain',e:'👧',c:'Family'},{pa:'ਭਰਾ',en:'Brother',r:'bhraa',e:'👦',c:'Family'},
+  {pa:'ਦਾਦਾ',en:'Grandfather',r:'daada',e:'👴',c:'Family'},{pa:'ਦਾਦੀ',en:'Grandmother',r:'daadi',e:'👵',c:'Family'},
+  {pa:'ਲਾਲ',en:'Red',r:'laal',e:'🔴',c:'Colors'},{pa:'ਨੀਲਾ',en:'Blue',r:'neela',e:'🔵',c:'Colors'},
+  {pa:'ਪੀਲਾ',en:'Yellow',r:'peela',e:'🟡',c:'Colors'},{pa:'ਹਰਾ',en:'Green',r:'hara',e:'🟢',c:'Colors'},
+  {pa:'ਕਾਲਾ',en:'Black',r:'kaala',e:'⚫',c:'Colors'},{pa:'ਚਿੱਟਾ',en:'White',r:'chitta',e:'⚪',c:'Colors'},
+  {pa:'ਨੱਕ',en:'Nose',r:'nakk',e:'👃',c:'Body'},{pa:'ਅੱਖ',en:'Eye',r:'akkh',e:'👁️',c:'Body'},
+  {pa:'ਕੰਨ',en:'Ear',r:'kann',e:'👂',c:'Body'},{pa:'ਹੱਥ',en:'Hand',r:'hatth',e:'✋',c:'Body'},
+  {pa:'ਪੈਰ',en:'Foot',r:'pair',e:'🦶',c:'Body'},{pa:'ਮੂੰਹ',en:'Mouth',r:'moonh',e:'👄',c:'Body'},
+  {pa:'ਸੂਰਜ',en:'Sun',r:'sooraj',e:'☀️',c:'Nature'},{pa:'ਚੰਦ',en:'Moon',r:'chand',e:'🌙',c:'Nature'},
+  {pa:'ਤਾਰਾ',en:'Star',r:'taara',e:'⭐',c:'Nature'},{pa:'ਦਰਖ਼ਤ',en:'Tree',r:'darkhat',e:'🌳',c:'Nature'},
+  {pa:'ਫੁੱਲ',en:'Flower',r:'phull',e:'🌸',c:'Nature'},{pa:'ਪਾਣੀ',en:'Water',r:'paani',e:'💧',c:'Nature'}
+];
+
+const sentences = [
+  {pa:'ਸਤਿ ਸ੍ਰੀ ਅਕਾਲ!',r:'Sat Sri Akaal!',en:'Hello! / Greetings!',ctx:'Greeting'},
+  {pa:'ਤੁਹਾਡਾ ਨਾਂ ਕੀ ਹੈ?',r:'Tuhaada naaN ki hai?',en:'What is your name?',ctx:'Introduction'},
+  {pa:'ਮੇਰਾ ਨਾਂ ___ ਹੈ।',r:'Mera naaN ___ hai.',en:'My name is ___.', ctx:'Introduction'},
+  {pa:'ਤੁਸੀਂ ਕਿਵੇਂ ਹੋ?',r:'Tussi kiven ho?',en:'How are you?',ctx:'Greeting'},
+  {pa:'ਮੈਂ ਠੀਕ ਹਾਂ।',r:"Main theek haaN.",en:'I am fine.',ctx:'Greeting'},
+  {pa:'ਮੈਨੂੰ ਭੁੱਖ ਲੱਗੀ ਹੈ।',r:'MainuN bhukh laggi hai.',en:"I am hungry.",ctx:'Daily life'},
+  {pa:'ਮੈਨੂੰ ਪਿਆਸ ਲੱਗੀ ਹੈ।',r:'MainuN piaas laggi hai.',en:"I am thirsty.",ctx:'Daily life'},
+  {pa:'ਮੈਂ ਸਕੂਲ ਜਾਂਦਾ ਹਾਂ।',r:"Main school jaaNda haaN.",en:'I go to school.',ctx:'Daily life'},
+  {pa:'ਕਿਰਪਾ ਕਰਕੇ।',r:'Kirpa karke.',en:'Please.',ctx:'Manners'},
+  {pa:'ਧੰਨਵਾਦ!',r:'Dhannvaad!',en:'Thank you!',ctx:'Manners'},
+  {pa:'ਮਾਫ਼ ਕਰਨਾ।',r:'Maaf karna.',en:'Sorry / Excuse me.',ctx:'Manners'},
+  {pa:'ਮੈਂ ਤੈਨੂੰ ਪਿਆਰ ਕਰਦਾ ਹਾਂ।',r:"Main tainuN pyaar karda haaN.",en:'I love you.',ctx:'Feelings'},
+  {pa:'ਅੱਜ ਮੌਸਮ ਚੰਗਾ ਹੈ।',r:'Ajj mausam changa hai.',en:'The weather is nice today.',ctx:'Weather'},
+  {pa:'ਇਹ ਕੀ ਹੈ?',r:'Ih ki hai?',en:'What is this?',ctx:'Learning'},
+  {pa:'ਮੈਂ ਪੰਜਾਬੀ ਸਿੱਖ ਰਿਹਾ ਹਾਂ।',r:"Main Punjabi sikkh riha haaN.",en:'I am learning Punjabi.',ctx:'Learning'},
+  {pa:'ਸ਼ੁਭ ਰਾਤ!',r:'Shubh raat!',en:'Good night!',ctx:'Greeting'},
+  {pa:'ਫਿਰ ਮਿਲਾਂਗੇ।',r:'Phir milaaNge.',en:"We'll meet again.",ctx:'Farewell'},
+];
+
+// ===== RENDER =====
+
+function renderAlphabet() {
+  const g = document.getElementById('alphaGrid');
+  alphabet.forEach((a, i) => {
+    const wrapper = document.createElement('div');
+    wrapper.className = 'alpha-flip';
+
+    wrapper.innerHTML = `
+      <div class="alpha-flip-inner">
+        <div class="alpha-front">
+          <span class="letter">${a.l}</span>
+          <span class="hint">${a.r.toUpperCase()}</span>
+          <span class="flip-tip">tap to flip ↩</span>
+        </div>
+        <div class="alpha-back">
+          <span class="back-letter">${a.l}</span>
+          <span class="back-sound">"${a.r}"</span>
+          <span class="back-like">like: ${a.like}</span>
+          <span class="back-word">${a.we2} ${a.w}<br><small style="color:#aaa">${a.we}</small></span>
+          <button class="more-btn" data-idx="${i}">🔍 Full guide</button>
+        </div>
+      </div>`;
+
+    // Flip on card click (but not on button)
+    wrapper.addEventListener('click', (e) => {
+      if (e.target.closest('.more-btn')) return;
+      wrapper.classList.toggle('flipped');
+      if (wrapper.classList.contains('flipped')) speak(a.l);
+    });
+
+    // Modal on button click
+    wrapper.querySelector('.more-btn').addEventListener('click', (e) => {
+      e.stopPropagation();
+      openModal(i);
+    });
+
+    g.appendChild(wrapper);
+  });
+}
+
+function openModal(i) {
+  const a = alphabet[i];
+  document.getElementById('modal-letter').textContent = a.l;
+  document.getElementById('modal-roman').textContent = '"' + a.r + '"';
+  document.getElementById('modal-like').textContent = a.like;
+  document.getElementById('modal-tip').textContent = a.tip;
+  document.getElementById('modal-emoji').textContent = a.we2;
+  document.getElementById('modal-word-pa').textContent = a.w;
+  document.getElementById('modal-word-en').textContent = a.we;
+  document.getElementById('modal-speak').onclick = () => speak(a.l + ' ' + a.w);
+  document.getElementById('modal-overlay').classList.add('open');
+  speak(a.l);
+}
+
+function renderNumbers() {
+  const g = document.getElementById('numGrid');
+  numbers.forEach(n => {
+    const d = document.createElement('div');
+    d.className = 'num-card';
+    d.innerHTML = `<span class="num-pa">${n.pa}</span><span class="num-en">${n.en}</span><span class="num-word">${n.w}</span>`;
+    d.onclick = () => { speak(n.w.split(' ')[0]); toast(`${n.pa} = ${n.en}`); };
+    g.appendChild(d);
+  });
+}
+
+let activeFilter = 'All';
+function renderWordFilters() {
+  const f = document.getElementById('wordsFilter');
+  wordCategories.forEach(c => {
+    const b = document.createElement('button');
+    b.className = 'filter-btn' + (c === 'All' ? ' active' : '');
+    b.textContent = c;
+    b.onclick = () => {
+      activeFilter = c;
+      document.querySelectorAll('.filter-btn').forEach(x => x.classList.remove('active'));
+      b.classList.add('active');
+      renderWords();
+    };
+    f.appendChild(b);
+  });
+}
+
+function renderWords() {
+  const g = document.getElementById('wordsGrid');
+  g.innerHTML = '';
+  const filtered = activeFilter === 'All' ? words : words.filter(w => w.c === activeFilter);
+  filtered.forEach(w => {
+    const d = document.createElement('div');
+    d.className = 'word-card';
+    d.innerHTML = `<span class="emoji">${w.e}</span><span class="word-pa">${w.pa}</span><span class="word-en">${w.en}</span><span class="word-roman">${w.r}</span>`;
+    d.onclick = () => { speak(w.pa); toast(`${w.pa} = ${w.en}`); };
+    g.appendChild(d);
+  });
+}
+
+function renderSentences() {
+  const l = document.getElementById('sentList');
+  sentences.forEach(s => {
+    const d = document.createElement('div');
+    d.className = 'sent-card';
+    d.innerHTML = `<span class="sent-pa">${s.pa}</span><span class="sent-roman">${s.r}</span><span class="sent-en">${s.en}</span><span class="sent-context">${s.ctx}</span>`;
+    d.onclick = () => { speak(s.pa); toast(s.en); };
+    l.appendChild(d);
+  });
+}
+
+// ===== TABS =====
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.onclick = () => {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById(btn.dataset.tab).classList.add('active');
+  };
+});
+
+// ===== SPEECH — Google Translate TTS =====
+let currentAudio = null;
+
+function speak(text) {
+  if (currentAudio) { currentAudio.pause(); currentAudio = null; }
+  const url = 'https://translate.googleapis.com/translate_tts?ie=UTF-8&tl=pa&client=gtx&q=' + encodeURIComponent(text);
+  const audio = new Audio(url);
+  currentAudio = audio;
+  audio.play().catch(() => {
+    const banner = document.getElementById('voice-banner');
+    if (banner) { banner.style.display = 'flex'; }
+  });
+}
+
+// ===== TOAST =====
+let toastTimer;
+function toast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 2200);
+}
+
+// ===== STORIES DATA =====
+const stories = [
+  {
+    emoji:'🦁🐭',
+    title:'ਸ਼ੇਰ ਅਤੇ ਚੂਹਾ',
+    titleEn:'The Lion and the Mouse',
+    level:'Tiny (2–5 yrs)',
+    pa:`ਇੱਕ ਵਾਰ ਇੱਕ ਵੱਡਾ ਸ਼ੇਰ ਸੁੱਤਾ ਹੋਇਆ ਸੀ।
+ਇੱਕ ਛੋਟਾ ਚੂਹਾ ਉਸ ਉੱਤੇ ਚੜ੍ਹ ਗਿਆ।
+ਸ਼ੇਰ ਜਾਗ ਗਿਆ ਅਤੇ ਉਸਨੇ ਚੂਹੇ ਨੂੰ ਫੜ ਲਿਆ।
+ਚੂਹੇ ਨੇ ਕਿਹਾ, "ਮੈਨੂੰ ਛੱਡ ਦੇ, ਮੈਂ ਇੱਕ ਦਿਨ ਤੇਰੀ ਮਦਦ ਕਰਾਂਗਾ।"
+ਸ਼ੇਰ ਹੱਸਿਆ ਅਤੇ ਉਸਨੂੰ ਛੱਡ ਦਿੱਤਾ।
+ਕੁਝ ਦਿਨ ਬਾਅਦ ਸ਼ੇਰ ਜਾਲ ਵਿੱਚ ਫਸ ਗਿਆ।
+ਚੂਹੇ ਨੇ ਜਾਲ ਕੱਟ ਦਿੱਤਾ ਅਤੇ ਸ਼ੇਰ ਆਜ਼ਾਦ ਹੋ ਗਿਆ।`,
+    en:`Once a big lion was sleeping. A tiny mouse ran over him. The lion woke up and caught the mouse. The mouse said, "Let me go — I will help you one day." The lion laughed and let him go. Days later, the lion got caught in a hunter's net. The mouse chewed through the ropes and set the lion free.`,
+    moral:'ਹਮੇਸ਼ਾ ਦਿਆਲੂ ਰਹੋ — ਛੋਟੇ ਦੋਸਤ ਵੀ ਵੱਡੀ ਮਦਦ ਕਰ ਸਕਦੇ ਹਨ।',
+    moralEn:'Always be kind — even small friends can help in big ways.'
+  },
+  {
+    emoji:'🐢🐇',
+    title:'ਕੱਛੂ ਅਤੇ ਖਰਗੋਸ਼',
+    titleEn:'The Tortoise and the Hare',
+    level:'Short (5–8 yrs)',
+    pa:`ਇੱਕ ਜੰਗਲ ਵਿੱਚ ਇੱਕ ਖਰਗੋਸ਼ ਅਤੇ ਇੱਕ ਕੱਛੂ ਰਹਿੰਦੇ ਸਨ।
+ਖਰਗੋਸ਼ ਬਹੁਤ ਤੇਜ਼ ਦੌੜਦਾ ਸੀ ਅਤੇ ਉਹ ਹਮੇਸ਼ਾ ਕੱਛੂ ਦਾ ਮਜ਼ਾਕ ਉਡਾਉਂਦਾ ਸੀ।
+ਇੱਕ ਦਿਨ ਕੱਛੂ ਨੇ ਕਿਹਾ, "ਚਲੋ ਦੌੜ ਲਗਾਈਏ।"
+ਖਰਗੋਸ਼ ਨੇ ਹਾਂ ਕਰ ਦਿੱਤੀ ਅਤੇ ਦੌੜ ਸ਼ੁਰੂ ਹੋ ਗਈ।
+ਖਰਗੋਸ਼ ਬਹੁਤ ਤੇਜ਼ੀ ਨਾਲ ਅੱਗੇ ਨਿਕਲ ਗਿਆ।
+ਉਸਨੇ ਸੋਚਿਆ, "ਕੱਛੂ ਤਾਂ ਬਹੁਤ ਹੌਲੀ ਹੈ, ਮੈਂ ਥੋੜ੍ਹਾ ਆਰਾਮ ਕਰਦਾ ਹਾਂ।"
+ਉਹ ਰੁੱਖ ਹੇਠਾਂ ਸੌਂ ਗਿਆ।
+ਕੱਛੂ ਧੀਰੇ ਧੀਰੇ ਚੱਲਦਾ ਰਿਹਾ ਅਤੇ ਅਖੀਰ ਵਿੱਚ ਜਿੱਤ ਗਿਆ।`,
+    en:`In a jungle lived a hare and a tortoise. The hare ran very fast and always mocked the slow tortoise. One day the tortoise said, "Let us race!" The hare agreed. The hare shot ahead and thought, "The tortoise is so slow, I'll rest a while." He fell asleep under a tree. The tortoise kept walking slowly and steadily — and won the race!`,
+    moral:'ਹੌਲੀ ਅਤੇ ਲਗਾਤਾਰ ਕੋਸ਼ਿਸ਼ ਕਰਨ ਵਾਲਾ ਹੀ ਜਿੱਤਦਾ ਹੈ।',
+    moralEn:'Slow and steady wins the race. Never give up!'
+  },
+  {
+    emoji:'🐦🫙',
+    title:'ਪਿਆਸੀ ਕਾਂਵਾਂ',
+    titleEn:'The Thirsty Crow',
+    level:'Short (5–8 yrs)',
+    pa:`ਗਰਮੀਆਂ ਦੇ ਦਿਨਾਂ ਵਿੱਚ ਇੱਕ ਕਾਂਵਾਂ ਨੂੰ ਬਹੁਤ ਪਿਆਸ ਲੱਗੀ।
+ਉਹ ਉੱਡਦਾ ਉੱਡਦਾ ਇੱਕ ਘੜੇ ਕੋਲ ਆਇਆ।
+ਘੜੇ ਵਿੱਚ ਥੋੜ੍ਹਾ ਜਿਹਾ ਪਾਣੀ ਸੀ — ਉਸਦੀ ਚੁੰਝ ਤੱਕ ਨਹੀਂ ਪਹੁੰਚਦਾ ਸੀ।
+ਕਾਂਵਾਂ ਨੇ ਸੋਚਿਆ ਅਤੇ ਫਿਰ ਇੱਕ ਤਰਕੀਬ ਲੱਭੀ।
+ਉਸਨੇ ਇੱਕ ਇੱਕ ਕਰਕੇ ਕੰਕਰ ਘੜੇ ਵਿੱਚ ਪਾਉਣੇ ਸ਼ੁਰੂ ਕੀਤੇ।
+ਹੌਲੀ ਹੌਲੀ ਪਾਣੀ ਉੱਪਰ ਆ ਗਿਆ।
+ਕਾਂਵਾਂ ਨੇ ਪਾਣੀ ਪੀਤਾ ਅਤੇ ਖੁਸ਼ ਹੋ ਗਿਆ।`,
+    en:`On a hot summer day a crow was very thirsty. He flew around and found a clay pot. There was a little water inside — but it was too low for his beak to reach. The crow thought hard and found a plan. He picked up pebbles one by one and dropped them into the pot. Slowly the water rose to the top. The crow drank and flew away happy!`,
+    moral:'ਮੁਸ਼ਕਲ ਵੇਲੇ ਦਿਮਾਗ਼ ਤੋਂ ਕੰਮ ਲਵੋ।',
+    moralEn:'Use your brain when things get tough — there is always a way.'
+  },
+  {
+    emoji:'🐺🐑',
+    title:'ਬਘਿਆੜ ਅਤੇ ਭੇਡਾਂ',
+    titleEn:'The Wolf and the Sheep',
+    level:'Medium (8–12 yrs)',
+    pa:`ਇੱਕ ਜੰਗਲ ਦੇ ਕੋਲ ਇੱਕ ਚਰਵਾਹਾ ਆਪਣੀਆਂ ਭੇਡਾਂ ਚਰਾਉਂਦਾ ਸੀ।
+ਉਸ ਜੰਗਲ ਵਿੱਚ ਇੱਕ ਚਲਾਕ ਬਘਿਆੜ ਰਹਿੰਦਾ ਸੀ।
+ਬਘਿਆੜ ਨੇ ਇੱਕ ਮਰੀ ਹੋਈ ਭੇਡ ਦੀ ਖੱਲ੍ਹ ਲੱਭੀ ਅਤੇ ਉਸਨੂੰ ਆਪਣੇ ਉੱਤੇ ਪਾ ਲਿਆ।
+ਉਹ ਭੇਡਾਂ ਦੇ ਵੱਗ ਵਿੱਚ ਰਲ ਗਿਆ ਅਤੇ ਚਰਵਾਹੇ ਨੂੰ ਕੁਝ ਪਤਾ ਨਾ ਲੱਗਾ।
+ਉਸ ਰਾਤ ਬਘਿਆੜ ਨੇ ਸੋਚਿਆ ਕਿ ਹੁਣ ਉਹ ਇੱਕ ਭੇਡ ਖਾ ਲਵੇਗਾ।
+ਪਰ ਚਰਵਾਹੇ ਨੂੰ ਉਸ ਰਾਤ ਖਾਣੇ ਲਈ ਭੇਡ ਦੀ ਲੋੜ ਸੀ।
+ਉਸਨੇ ਹਨੇਰੇ ਵਿੱਚ ਭੇਡ ਸਮਝ ਕੇ ਬਘਿਆੜ ਨੂੰ ਚੁੱਕ ਲਿਆ।
+ਬਘਿਆੜ ਦਾ ਆਪਣਾ ਫੰਦਾ ਆਪਣੇ ਆਪ ਉੱਤੇ ਪੈ ਗਿਆ।`,
+    en:`Near a forest, a shepherd grazed his flock of sheep. A cunning wolf lived in that forest and hungered for the sheep. One day the wolf found the skin of a dead sheep and draped it over himself. He crept into the flock and the shepherd noticed nothing. That night the wolf planned to eat one of the sheep. But that very night the shepherd needed a sheep for his meal. In the darkness, he grabbed the wolf by mistake — thinking it was a sheep. The wolf's own trick had trapped him.`,
+    moral:'ਧੋਖੇ ਨਾਲ ਹਮੇਸ਼ਾ ਨੁਕਸਾਨ ਆਪਣੇ ਆਪ ਨੂੰ ਹੀ ਹੁੰਦਾ ਹੈ।',
+    moralEn:'Deception always backfires — dishonesty harms the deceiver most.'
+  },
+  {
+    emoji:'🐘🐜',
+    title:'ਹਾਥੀ ਅਤੇ ਕੀੜੀਆਂ',
+    titleEn:'The Elephant and the Ants',
+    level:'Medium (8–12 yrs)',
+    pa:`ਇੱਕ ਵੱਡਾ ਹਾਥੀ ਆਪਣੀ ਤਾਕਤ ਉੱਤੇ ਬਹੁਤ ਘਮੰਡ ਕਰਦਾ ਸੀ।
+ਉਹ ਜੰਗਲ ਵਿੱਚ ਸਭ ਨੂੰ ਡਰਾਉਂਦਾ ਸੀ।
+ਇੱਕ ਦਿਨ ਉਹ ਕੀੜੀਆਂ ਦੇ ਵੱਡੇ ਸਮੂਹ ਕੋਲੋਂ ਲੰਘਿਆ।
+"ਹੱਟੋ ਮੇਰੇ ਰਾਹ ਤੋਂ, ਤੁਸੀਂ ਛੋਟੇ ਜਿਹੇ ਜੀਵ!" ਉਸਨੇ ਕਿਹਾ।
+ਕੀੜੀਆਂ ਨੇ ਕਿਹਾ, "ਅਸੀਂ ਮਿਲ ਕੇ ਕੰਮ ਕਰਦੀਆਂ ਹਾਂ, ਤੈਨੂੰ ਸਾਡੀ ਤਾਕਤ ਦਾ ਪਤਾ ਨਹੀਂ।"
+ਹਾਥੀ ਹੱਸਿਆ।
+ਕੀੜੀਆਂ ਨੇ ਮਿਲ ਕੇ ਹਾਥੀ ਦੀ ਸੁੰਡ ਅੰਦਰ ਵੜ ਗਈਆਂ।
+ਹਾਥੀ ਬਹੁਤ ਤੜਫਿਆ ਅਤੇ ਉਸਨੇ ਮਾਫ਼ੀ ਮੰਗੀ।
+ਉਸ ਦਿਨ ਤੋਂ ਉਹ ਕਦੇ ਕਿਸੇ ਨੂੰ ਛੋਟਾ ਨਾ ਸਮਝਦਾ।`,
+    en:`A mighty elephant was very proud of his strength and bullied all the creatures of the jungle. One day he passed a huge colony of ants. "Get out of my way, tiny creatures!" he bellowed. The ants replied, "We work together — you don't know our power." The elephant laughed. The ants marched together right into the elephant's trunk. The elephant writhed in pain and begged for mercy. From that day on, he never looked down on anyone again.`,
+    moral:'ਕਿਸੇ ਨੂੰ ਛੋਟਾ ਨਾ ਸਮਝੋ — ਏਕਤਾ ਵਿੱਚ ਬਲ ਹੈ।',
+    moralEn:'Never underestimate anyone — there is great strength in unity.'
+  },
+  {
+    emoji:'🐦🐊',
+    title:'ਚਿੜੀ ਅਤੇ ਮਗਰਮੱਛ',
+    titleEn:'The Bird and the Crocodile',
+    level:'Tiny (2–5 yrs)',
+    pa:`ਦਰਿਆ ਕੰਢੇ ਇੱਕ ਮਗਰਮੱਛ ਰਹਿੰਦਾ ਸੀ।
+ਇੱਕ ਛੋਟੀ ਚਿੜੀ ਉਸਦੇ ਦੰਦਾਂ ਵਿੱਚੋਂ ਕੀੜੇ ਚੁਗਦੀ ਸੀ।
+ਮਗਰਮੱਛ ਖੁਸ਼ ਸੀ ਅਤੇ ਚਿੜੀ ਨੂੰ ਕਦੇ ਨਾ ਖਾਂਦਾ।
+ਦੋਵੇਂ ਚੰਗੇ ਦੋਸਤ ਸਨ।
+ਜਦੋਂ ਦੂਜੇ ਜਾਨਵਰ ਹੱਸਦੇ, ਉਹ ਕਹਿੰਦੇ: "ਹਰ ਰਿਸ਼ਤੇ ਵਿੱਚ ਮਦਦ ਹੋਣੀ ਚਾਹੀਦੀ ਹੈ।"`,
+    en:`By the river lived a crocodile. A small bird would hop into its open mouth and peck out the insects from between its teeth. The crocodile felt clean and happy and never harmed the bird. The two became the best of friends. When other animals laughed at the odd pair, they would say: "Every good friendship is built on helping each other."`,
+    moral:'ਸੱਚੀ ਦੋਸਤੀ ਵਿੱਚ ਇੱਕ ਦੂਜੇ ਦੀ ਮਦਦ ਹੁੰਦੀ ਹੈ।',
+    moralEn:'True friendship means helping each other — big or small.'
+  }
+];
+
+function renderStories() {
+  const g = document.getElementById('storiesGrid');
+  stories.forEach(s => {
+    const card = document.createElement('div');
+    card.className = 'story-card';
+    card.innerHTML = `
+      <div class="story-header">
+        <span class="story-badge">${s.level}</span>
+        <span class="story-emoji">${s.emoji}</span>
+        <div class="story-title">${s.title}</div>
+        <div class="story-title-en">${s.titleEn}</div>
+      </div>
+      <div class="story-body">
+        <span class="story-text-pa">${s.pa.replace(/\n/g,'<br>')}</span>
+        <div class="story-divider"></div>
+        <div class="story-text-en">${s.en}</div>
+        <div class="story-moral">
+          <div class="moral-label">💡 ਸਿੱਖਿਆ · Moral</div>
+          <div class="moral-text">${s.moral}<br><span style="color:#aaa;font-weight:600;font-size:0.78rem">${s.moralEn}</span></div>
+        </div>
+        <button class="story-listen-btn" data-text="${s.pa.replace(/"/g,'&quot;')}">🔊 ਸੁਣੋ · Listen</button>
+      </div>`;
+
+    const btn = card.querySelector('.story-listen-btn');
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const isPlaying = btn.classList.contains('playing');
+      document.querySelectorAll('.story-listen-btn.playing').forEach(b => {
+        b.classList.remove('playing');
+        b.textContent = '🔊 ਸੁਣੋ · Listen';
+      });
+      if (currentAudio) { currentAudio.pause(); currentAudio = null; }
+      if (!isPlaying) {
+        btn.classList.add('playing');
+        btn.textContent = '⏹ ਰੋਕੋ · Stop';
+        speak(s.pa.replace(/\n/g,' '));
+        // Reset button when audio ends
+        const checkEnd = setInterval(() => {
+          if (!currentAudio || currentAudio.ended || currentAudio.paused) {
+            btn.classList.remove('playing');
+            btn.textContent = '🔊 ਸੁਣੋ · Listen';
+            clearInterval(checkEnd);
+          }
+        }, 500);
+      }
+    });
+
+    g.appendChild(card);
+  });
+}
+
+// ===== MODAL close on backdrop =====
+document.getElementById('modal-overlay').addEventListener('click', function(e) {
+  if (e.target === this) this.classList.remove('open');
+});
+
+// ===== INIT =====
+renderAlphabet();
+renderNumbers();
+renderWordFilters();
+renderWords();
+renderSentences();
+renderStories();
+</script>
+</body>
+</html>
